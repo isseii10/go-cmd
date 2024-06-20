@@ -12,11 +12,11 @@ func main() {
 		fmt.Fprintf(os.Stderr, "%s: file name not given\n", os.Args[0])
 	}
 	for _, v := range os.Args[1:] {
-		doCat(v)
+		cat(v)
 	}
 }
 
-func doCat(s string) {
+func cat(s string) {
 	f, err := os.Open(s)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to open file %s: %v", s, err)
