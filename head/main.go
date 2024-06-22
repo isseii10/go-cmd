@@ -2,28 +2,38 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"io"
 	"os"
-	"strconv"
+)
+
+const DEFAULT_LINES = 10
+
+var (
+	n     = flag.Int("n", DEFAULT_LINES, "")
+	lines = flag.Int("lines", DEFAULT_LINES, "")
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Fprintf(os.Stderr, "Usage: %s n\n", os.Args[0])
-		os.Exit(1)
+	flag.Parse()
+	args := flag.Args()
+
+	num := DEFAULT_LINES
+	// nとlinesが両方ある場合はnが優先される
+	if *lines != DEFAULT_LINES {
+		num = *lines
 	}
-	n, err := strconv.Atoi(os.Args[1])
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "error: n should be number\n")
-		os.Exit(1)
+	if *n != DEFAULT_LINES {
+		num = *n
 	}
-	if len(os.Args) == 2 {
-		head(os.Stdin, n)
+
+	if len(args) == 0 {
+		head(os.Stdin, num)
 		os.Exit(0)
 	}
-	for _, path := range os.Args[2:] {
-		if err := handleFile(path, n); err != nil {
+	for _, path := range args {
+		if err := handleFile(path, num); err != nil {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			os.Exit(1)
 		}
